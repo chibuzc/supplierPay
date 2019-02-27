@@ -1,7 +1,7 @@
 require("../models/beneficiary");
 const passport = require('passport')
-const axios = require ('axios');
-const keys = require('../config')
+
+
 
 
 module.exports = app => {
