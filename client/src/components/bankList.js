@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Axios from "axios";
+import axios from "axios";
 import { Redirect } from "react-router";
 import { isLoggedIn } from "../helpers/loggedInUser";
 
@@ -13,32 +13,29 @@ class BankList extends Component {
   }
 
   async componentDidMount() {
-    const user = await isLoggedIn();
-    console.log(user);
-    this.setState({ user });
-    const res = await Axios.get("/api/paystack/banks");
-    this.setState({ banks: res.data }, () => {
-      console.log(this.state);
-    });
+    try {
+      const user = await axios.get("/api/current_user");
+
+      this.setState({ user: user.data });
+      const res = await axios.get("/api/paystack/banks");
+      this.setState({ banks: res.data });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   handleClick = bank => {
-    console.log(bank.banks);
     const code = bank.banks.code;
-    console.log(code);
     this.setState({ redirect: true, beneficiaryBank: bank.banks });
   };
 
   renderContent() {
     if (!this.state.user) {
-      return <Redirect to="/" />;
+      return <div>You must be Logged in</div>;
     }
     if (this.state.banks) {
-      {
-        console.log(`banks`, this.state.banks);
-      }
+      
       return this.state.banks.map(banks => {
-        console.log("bankssssss", banks);
         return (
           <ul key={banks.code} class="collection with-header">
             {/* <li class="collection-header"><h4>First Names</h4></li> */}
@@ -71,7 +68,7 @@ class BankList extends Component {
         />
       );
     }
-    return <div>{this.renderContent()}</div>;
+    return this.renderContent();
   }
 }
 

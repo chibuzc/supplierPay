@@ -11,7 +11,7 @@ class Home extends Component{
 
     async componentDidMount(){
     const user = await isLoggedIn()
-    console.log(user)
+    // console.log(user)
     this.setState({user})
     }
 
