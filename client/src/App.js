@@ -20,15 +20,11 @@ class App extends Component {
     this.state = {user:null}
   }
 
-  componentDidMount(){
-    // console.log(`here`)
-    // const user = axios.get('http://localhost:5000/auth/google')
-    // this.setState({user})
-  }
 
 
   render() {
     return (
+      
      <BrowserRouter>
      <div>
        <NavBar />
@@ -39,6 +35,7 @@ class App extends Component {
        <Route exact path = '/transfer/confirmation' component={confirmTransfer} />
        <Route exact path = '/beneficiaries' component={beneficiaryList} />
        <Route exact path='/bulkpay' component={BulkPay} />
+       {/* <Route exact path='/transfer_success' component={success} /> */}
        </div>
        
      </div>
