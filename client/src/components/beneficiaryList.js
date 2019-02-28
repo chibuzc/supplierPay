@@ -91,9 +91,6 @@ class BeneficiaryList extends Component {
   }
 
   renderContent() {
-    if (!this.state.user) {
-      return <div>You must be Logged in</div>;
-    }
     if (this.state.next) {
       return (
         <Redirect

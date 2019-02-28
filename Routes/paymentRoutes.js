@@ -3,7 +3,6 @@ const axios = require("axios");
 const {PAYSTACK_PUBLIC_KEY, PAYSTACK_SECRET_KEY} = require("../config/keys");
 const crypto = require("crypto");
 const Beneficiary = require("../models/beneficiary");
-// const {googleClientID, googleClientSecret} = require("../config/keys");
 
 module.exports = app => {
   app.get("/api/paystack/banks", async (req, res) => {
@@ -22,14 +21,11 @@ module.exports = app => {
   });
 
   app.post("/api/paystack/verifyAccount", async (req, res) => {
-    //Remember to do serous validation here!
-    //   console.log(`body`, req.body);
     const accountNumber = req.body.accountNumber;
     const bankCode = req.body.bankCode;
-    console.log(accountNumber, bankCode);
+    
     const URL = `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`;
-    //   console.log(req.headers);
-    //   console.log(URL);
+    
     try {
       const verification = await axios({
         method: "get",
@@ -38,14 +34,12 @@ module.exports = app => {
           Authorization: `Bearer ${ PAYSTACK_SECRET_KEY}`
         }
       });
-      // console.log("headerss", req.headers);
+    
       console.log(`result`, verification.data.data);
       res.send(verification.data.data);
     } catch (error) {
       console.log(error);
     }
-
-    // res.send(result.data.data)
   });
 
   app.post("/api/paystack/transferReciept", async (req, res) => {
@@ -174,6 +168,8 @@ module.exports = app => {
       console.log(error);
     }
   });
+
+  
   app.post("/api/paystack/testEndpoint", function(req, res) {
     //validate event
     var hash = crypto

@@ -30,9 +30,6 @@ class BankList extends Component {
   };
 
   renderContent() {
-    if (!this.state.user) {
-      return <div>You must be Logged in</div>;
-    }
     if (this.state.banks) {
       
       return this.state.banks.map(banks => {
