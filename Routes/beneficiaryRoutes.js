@@ -7,7 +7,4 @@ module.exports = app => {
     res.send(beneficiaries);
   });
 
-  app.get("/", async (req, res) => {
-    res.send(`beneficiaries`);
-  });
 };
