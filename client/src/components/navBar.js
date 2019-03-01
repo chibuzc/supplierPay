@@ -8,17 +8,17 @@ const navBar = props => {
       <nav class="nav-extended">
         <div class="nav-wrapper blue lighten-3">
           <a href="#" class="brand-logo">
-            Logo
+            Pay Now!
           </a>
 
-          <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+          {/* <a href="#" data-target="mobile-demo" class="sidenav-trigger">
             <i class="material-icons">menu</i>
           </a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li>
               <a href='/auth/google'>Login</a>
             </li>
-          </ul>
+          </ul> */}
         </div>
         <div class="nav-content blue lighten-3">
           <ul class="tabs tabs-transparent">

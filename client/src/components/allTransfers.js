@@ -11,13 +11,11 @@ class allTransfers extends Component {
 
   async componentDidMount() {
     const res = await axios.get("/api/paystack/allTransfers");
-    // console.log(`api response for all transfers `, res)
     this.setState({ allTransfers: res.data });
   }
 
   renderTransfers() {
     return this.state.allTransfers.map(transfer => {
-      console.log(`Here nowww`, transfer);
       return (
         <div>
             
@@ -30,9 +28,6 @@ class allTransfers extends Component {
                 Status: {transfer.status} <br/>
 
               </p>
-              {/* <a href="#!" class="secondary-content">
-                <i class="material-icons">grade</i>
-              </a> */}
             </li>
           </ul>
         </div>

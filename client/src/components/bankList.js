@@ -32,7 +32,6 @@ class BankList extends Component {
       return this.state.banks.map(banks => {
         return (
           <ul key={banks.code} class="collection with-header">
-            {/* <li class="collection-header"><h4>First Names</h4></li> */}
             <li
               class="collection-item"
               key={banks.code}

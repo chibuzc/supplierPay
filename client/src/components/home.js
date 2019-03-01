@@ -11,15 +11,13 @@ class Home extends Component{
 
     async componentDidMount(){
     const user = await isLoggedIn()
-    // console.log(user)
     this.setState({user})
     }
 
     render(){
         return(
             <div className = "homepage">
-                <h2 className= "bounceIn"> Welcome </h2>
-                {/* <a href="/auth/google" class="waves-effect waves-light btn google-login">Login With Google</a> */}
+                <h2 className= "bounceIn"> Welcome To PayNow </h2>
             </div>
         )
     }
