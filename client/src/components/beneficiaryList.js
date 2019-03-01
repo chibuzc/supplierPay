@@ -65,9 +65,9 @@ class BeneficiaryList extends Component {
       return (
         <div>
           <ul class="collection with-header">
-            {/* <li class="collection-header"><h4>First Names</h4></li> */}
+           
             <li class="collection-item">
-              {/* <div>{beneficiaries.name}</div> */}
+              
               <div>
                 <p class="inline">
                   <label>

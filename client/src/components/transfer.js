@@ -82,7 +82,7 @@ class Transfer extends Component {
                 type="text"
                 class="validate"
                 value={this.state.accountName}
-                // onChange={this.onClick}
+                
               />
             </div>
           </div>

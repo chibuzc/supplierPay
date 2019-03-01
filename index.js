@@ -9,7 +9,6 @@ const Beneficiary = require("./models/beneficiary");
 mongoose.Promise = global.Promise;
 
 mongoose.connect(
-  // "mongodb+srv://chibuzc:charlescc@supplerpay-6ab4d.mongodb.net/test?retryWrites=true",
   DB,
 ).then(() => {
   console.log("DB is up");

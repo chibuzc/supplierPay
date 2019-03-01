@@ -16,8 +16,7 @@ module.exports = app => {
           Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
         }
       });
-      // console.log(result.data.data)
-      //remember to put status check for error handling
+      
       res.send(result.data.data);
     } catch (error) {
       const { message, status } = error.response;
@@ -70,8 +69,6 @@ module.exports = app => {
 
       console.log(`reciept`, reciept.data);
 
-      //remember to mosularize this and decide later if you want to save bene into db first
-      //before sending data to the front-end
       console.log(`here`, req.body.accountName);
       if (req.body.saveBeneficiary) {
         const existingBeneficiary = await Beneficiary.findOne({
@@ -174,52 +171,45 @@ module.exports = app => {
           Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
         }
       });
-      if(transfers.data.data){
-      transfers.data.data = transfers.data.data.slice(0,8)
-      const resolveName = transfers.data.data.map(transfer => {
-        // console.log(transfer)
-        const accountNumber = transfer.recipient.details.account_number;
-        const bankCode = transfer.recipient.details.bank_code;
-        const URL = `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`;
+      if (transfers.data.data) {
+        transfers.data.data = transfers.data.data.slice(0, 5);
+        const resolveName = transfers.data.data.map(transfer => {
+          const accountNumber = transfer.recipient.details.account_number;
+          const bankCode = transfer.recipient.details.bank_code;
+          const URL = `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`;
 
-        // try {
-        const verification = axios({
-          method: "get",
-          url: URL,
-          headers: {
-            Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
+          const verification = axios({
+            method: "get",
+            url: URL,
+            headers: {
+              Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
+            }
+          });
+
+          return verification;
+        });
+        const data = await Promise.all(resolveName);
+        const requiredData = data.map(d => d.data.data);
+        console.log(`requiredData`, requiredData[0]);
+        console.log(`transfers`, transfers.data.data[0].recipient.details);
+
+        const finalResult = [];
+        transfers.data.data.forEach(t => {
+          //  console.log(`t`, t)
+          const found = requiredData.find(r => {
+            console.log(t.recipient.details.account_number, r.account_number);
+            return t.recipient.details.account_number === r.account_number;
+          });
+          if (found) {
+            finalResult.push({
+              ...t,
+              account_name: found.account_name
+            });
           }
         });
-
-        return verification;
-
-      
-      });
-      const data = await Promise.all(resolveName);
-      const requiredData = data.map(d => d.data.data);
-      console.log(`requiredData`, requiredData[0])
-      console.log(`transfers`, transfers.data.data[0].recipient.details)
-
-
-
-    const finalResult = [];
-    transfers.data.data.forEach(t => {
-      //  console.log(`t`, t)
-      const found =  requiredData.find(r =>{
-
-          console.log(t.recipient.details.account_number,r.account_number)
-         return t.recipient.details.account_number === r.account_number}
-         );
-      if(found){
-        finalResult.push({
-          ...t,
-          account_name: found.account_name
-        })
+        console.log(`final resultsss`, finalResult);
+        res.send(finalResult);
       }
-     })
-     console.log(`final resultsss`,finalResult);
-     res.send(finalResult)
-    }
     } catch (error) {
       console.log(error);
     }
@@ -238,11 +228,6 @@ module.exports = app => {
       });
       console.log("headerss", req.headers);
       console.log(`result`, verification);
-
-      // arr1.some(r=> arr2.indexOf(r) >= 0)
-
-
-
     } catch (error) {
       console.log(error);
     }

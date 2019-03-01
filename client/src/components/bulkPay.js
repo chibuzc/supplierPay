@@ -60,22 +60,17 @@ class BulkPay extends Component {
       this.props.location.beneficiaries &&
       this.props.location.beneficiaries.length
     ) {
-      // this.setState({allTransactions:this.props.location.beneficiaries})
       return this.props.location.beneficiaries.map(b => {
         return (
           <div>
-            {/* <ul class="collection with-header">
-              <li class="collection-item">
-                <div> */}
+            
             <p class="inline">
               <label>
                 <input type="text" onChange={e => this.handleChange(e, b)} />
                 <span>{b.name}</span>
               </label>
             </p>
-            {/* </div>
-              </li>
-            </ul> */}
+           
             
           </div>
         );
