@@ -86,10 +86,13 @@ module.exports = app => {
           await beneficiary.save();
           console.log("done here");
           res.send(reciept.data);
+          return;
         }
         res.send(reciept.data);
+        return;
       }
       res.send(reciept.data);
+      return;
     } catch (e) {
       console.log(`error`, e);
     }

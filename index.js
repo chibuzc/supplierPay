@@ -39,13 +39,9 @@ require("./services/passport");
 
 require("./Routes/authRoutes")(app);
 require("./Routes/paymentRoutes")(app);
+require("./Routes/beneficiaryRoutes")(app)
 
 
-app.get("api/beneficiary/all", async (req, res) => {
-  const beneficiaries = await Beneficiary.find({});
-  console.log(`beneficiaries`, beneficiaries);
-  res.send(beneficiaries);
-});
 
 
 // if we are in production

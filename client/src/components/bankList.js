@@ -14,9 +14,6 @@ class BankList extends Component {
 
   async componentDidMount() {
     try {
-      const user = await axios.get("/api/current_user");
-
-      this.setState({ user: user.data });
       const res = await axios.get("/api/paystack/banks");
       this.setState({ banks: res.data });
     } catch (error) {

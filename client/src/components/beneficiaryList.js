@@ -13,14 +13,14 @@ class BeneficiaryList extends Component {
       trueBeneficiaries: null,
       selectedBeneficiaries: null,
       selected: false,
-      user: null
+      user: null,
+      beneficiaries:null
     };
   }
 
   async componentDidMount() {
-    const user = await axios.get("/api/current_user");
-    this.setState({ user: user.data });
     const res = await axios.get("/api/beneficiary/all");
+    console.log(res.data)
     const data = res.data.map(d => {
       d.selected = false;
       return d;
@@ -54,6 +54,7 @@ class BeneficiaryList extends Component {
 
   renderBeneficiaries() {
     return this.state.beneficiaries.map(beneficiaries => {
+      console.log(`Here nowww`)
       return (
         <div>
           <ul class="collection with-header">
@@ -103,20 +104,23 @@ class BeneficiaryList extends Component {
       );
     }
 
-    if (this.state.beneficiaries) {
-      return <div>{this.renderBeneficiaries}</div>;
+    if (this.state.beneficiaries && this.state.beneficiaries.length) {
+      return <div>
+      {this.renderBeneficiaries()}
+      {this.renderButton()}
+      </div>;
+    }if(!this.state.beneficiaries){
+      return(
+        <div>LOADING.....</div>
+      )
     }
-    return <div>LOADING.....</div>;
+    return <div>NO BENEFICIARIES</div>
   }
 
   render() {
-    // if(this.state.redirect){
-    //     return(<Redirect to={{pathname:‘/transfer’,beneficiaryBank:this.state.beneficiaryBank}} push />)
-    // }
     return (
       <div>
         {this.renderContent()}
-        {this.renderButton}
       </div>
     );
   }
