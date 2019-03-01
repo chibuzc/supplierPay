@@ -6,9 +6,10 @@ const Beneficiary = require("../models/beneficiary");
 
 module.exports = app => {
   app.get("/api/paystack/banks", async (req, res) => {
+    const URL = "https://api.paystack.co/bank"
     req.headers["Authorization"] = PAYSTACK_SECRET_KEY;
     try {
-      const result = await axios.get({
+      const result = await axios({
         method: "get",
         url: URL,
         headers: {
