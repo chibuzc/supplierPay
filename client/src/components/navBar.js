@@ -23,14 +23,18 @@ const navBar = props => {
         <div class="nav-content blue lighten-3">
           <ul class="tabs tabs-transparent">
             <li class="tab">
-            <Link to='/initiate_transfer'>Transfer</Link>
+            <Link to='/initiate_transfer'>Make Transfer</Link>
             </li>
             <li class="tab">
             <Link to='/beneficiaries'>Beneficiaries</Link>
+            </li>
+            <li class="tab">
+            <Link to='/transfer/all'>All Transfers</Link>
                 
             </li>
           </ul>
         </div>
+        
       </nav>
 
     </div>

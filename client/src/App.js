@@ -10,6 +10,8 @@ import confirmTransfer from "./components/confirmTransfer";
 import beneficiaryList from "./components/beneficiaryList"
 import BulkPay from "./components/bulkPay";
 import Home from "./components/home";
+import AllTransfers from "./components/allTransfers"
+import TransferSuccess from "./components/transferSuccess"
 
 
 
@@ -35,7 +37,8 @@ class App extends Component {
        <Route exact path = '/transfer/confirmation' component={confirmTransfer} />
        <Route exact path = '/beneficiaries' component={beneficiaryList} />
        <Route exact path='/bulkpay' component={BulkPay} />
-       {/* <Route exact path='/transfer_success' component={success} /> */}
+       <Route exact path='/transfer/all' component={AllTransfers} />
+       <Route exact path='/transfer_success' component={TransferSuccess} />
        </div>
        
      </div>

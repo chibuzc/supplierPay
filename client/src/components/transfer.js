@@ -104,7 +104,7 @@ class Transfer extends Component {
             </label>
           </p>
           <button type="submit" class="waves-effect waves-light btn">
-            button
+            Next
           </button>
         </div>
       );

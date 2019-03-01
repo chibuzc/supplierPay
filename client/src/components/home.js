@@ -19,7 +19,7 @@ class Home extends Component{
         return(
             <div className = "homepage">
                 <h2 className= "bounceIn"> Welcome </h2>
-                <a href="/auth/google" class="waves-effect waves-light btn google-login">Login With Google</a>
+                {/* <a href="/auth/google" class="waves-effect waves-light btn google-login">Login With Google</a> */}
             </div>
         )
     }

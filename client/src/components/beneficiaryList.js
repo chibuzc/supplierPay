@@ -28,6 +28,10 @@ class BeneficiaryList extends Component {
     this.setState({ beneficiaries: data });
   }
 
+   beneficiaryText = {
+    margin: '40px',
+  };
+
   handleClick = e => {
     e.preventDefault();
     const trueBeneficiaries = this.state.beneficiaries.filter(b => {
@@ -52,7 +56,10 @@ class BeneficiaryList extends Component {
     this.setState({ beneficiaries: ben });
   };
 
+
+
   renderBeneficiaries() {
+    
     return this.state.beneficiaries.map(beneficiaries => {
       console.log(`Here nowww`)
       return (
@@ -69,6 +76,8 @@ class BeneficiaryList extends Component {
                       onChange={e => this.handleCheck(e, beneficiaries)}
                     />
                     <span>{beneficiaries.name}</span>
+                    <span style={this.beneficiaryText}>{beneficiaries.bank}</span>
+                    <span >{beneficiaries.accountNumber}</span>
                   </label>
                 </p>
               </div>
@@ -79,6 +88,8 @@ class BeneficiaryList extends Component {
     });
   }
 
+ 
+
   renderButton() {
     return (
       <button
@@ -86,7 +97,7 @@ class BeneficiaryList extends Component {
         onClick={this.handleClick}
         class="waves-effect waves-light btn"
       >
-        button
+        Next
       </button>
     );
   }
@@ -106,6 +117,7 @@ class BeneficiaryList extends Component {
 
     if (this.state.beneficiaries && this.state.beneficiaries.length) {
       return <div>
+        <strong>Tick the checkbox to send to single / multiple beneficiaries</strong>
       {this.renderBeneficiaries()}
       {this.renderButton()}
       </div>;
@@ -120,6 +132,7 @@ class BeneficiaryList extends Component {
   render() {
     return (
       <div>
+       
         {this.renderContent()}
       </div>
     );

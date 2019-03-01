@@ -6,7 +6,7 @@ const Beneficiary = require("../models/beneficiary");
 
 module.exports = app => {
   app.get("/api/paystack/banks", async (req, res) => {
-    const URL = "https://api.paystack.co/bank"
+    const URL = "https://api.paystack.co/bank";
     req.headers["Authorization"] = PAYSTACK_SECRET_KEY;
     try {
       const result = await axios({
@@ -80,7 +80,9 @@ module.exports = app => {
         if (!existingBeneficiary) {
           const beneficiary = new Beneficiary({
             name: req.body.accountName,
-            transferReciept: reciept.data.data.recipient_code
+            transferReciept: reciept.data.data.recipient_code,
+            bank: reciept.data.data.details.bank_name,
+            accountNumber: reciept.data.data.details.account_number
           });
           console.log("bene", beneficiary);
           await beneficiary.save();
@@ -158,6 +160,68 @@ module.exports = app => {
       res.send(payment.data);
     } catch (error) {
       console.log(error);
+      res.send({ error: "Something went wrong" });
+    }
+  });
+
+  app.get("/api/paystack/allTransfers", async (req, res) => {
+    try {
+      const URL = "https://api.paystack.co/transfer";
+      const transfers = await axios({
+        method: "get",
+        url: URL,
+        headers: {
+          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
+        }
+      });
+      if(transfers.data.data){
+      transfers.data.data = transfers.data.data.slice(0,8)
+      const resolveName = transfers.data.data.map(transfer => {
+        // console.log(transfer)
+        const accountNumber = transfer.recipient.details.account_number;
+        const bankCode = transfer.recipient.details.bank_code;
+        const URL = `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`;
+
+        // try {
+        const verification = axios({
+          method: "get",
+          url: URL,
+          headers: {
+            Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
+          }
+        });
+
+        return verification;
+
+      
+      });
+      const data = await Promise.all(resolveName);
+      const requiredData = data.map(d => d.data.data);
+      console.log(`requiredData`, requiredData[0])
+      console.log(`transfers`, transfers.data.data[0].recipient.details)
+
+
+
+    const finalResult = [];
+    transfers.data.data.forEach(t => {
+      //  console.log(`t`, t)
+      const found =  requiredData.find(r =>{
+
+          console.log(t.recipient.details.account_number,r.account_number)
+         return t.recipient.details.account_number === r.account_number}
+         );
+      if(found){
+        finalResult.push({
+          ...t,
+          account_name: found.account_name
+        })
+      }
+     })
+     console.log(`final resultsss`,finalResult);
+     res.send(finalResult)
+    }
+    } catch (error) {
+      console.log(error);
     }
   });
 
@@ -174,6 +238,11 @@ module.exports = app => {
       });
       console.log("headerss", req.headers);
       console.log(`result`, verification);
+
+      // arr1.some(r=> arr2.indexOf(r) >= 0)
+
+
+
     } catch (error) {
       console.log(error);
     }
