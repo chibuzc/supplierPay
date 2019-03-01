@@ -1,40 +1,46 @@
 require("../models/beneficiary");
 const axios = require("axios");
-const {PAYSTACK_PUBLIC_KEY, PAYSTACK_SECRET_KEY} = require("../config/keys");
+const { PAYSTACK_PUBLIC_KEY, PAYSTACK_SECRET_KEY } = require("../config/keys");
 const crypto = require("crypto");
 const Beneficiary = require("../models/beneficiary");
 
 module.exports = app => {
   app.get("/api/paystack/banks", async (req, res) => {
-    req.headers["Authorization"] =  PAYSTACK_SECRET_KEY;
+    req.headers["Authorization"] = PAYSTACK_SECRET_KEY;
     try {
-      const result = await axios.get("https://api.paystack.co/bank");
+      const result = await axios.get({
+        method: "get",
+        url: URL,
+        headers: {
+          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
+        }
+      });
       // console.log(result.data.data)
       //remember to put status check for error handling
       res.send(result.data.data);
     } catch (error) {
       const { message, status } = error.response;
       console.log("response", message);
-      console.log("status", status)
-      res.status(status).send({error:"Something went wrong"});
+      console.log("status", status);
+      res.status(status).send({ error: "Something went wrong" });
     }
   });
 
   app.post("/api/paystack/verifyAccount", async (req, res) => {
     const accountNumber = req.body.accountNumber;
     const bankCode = req.body.bankCode;
-    
+
     const URL = `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`;
-    
+
     try {
       const verification = await axios({
         method: "get",
         url: URL,
         headers: {
-          Authorization: `Bearer ${ PAYSTACK_SECRET_KEY}`
+          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
         }
       });
-    
+
       console.log(`result`, verification.data.data);
       res.send(verification.data.data);
     } catch (error) {
@@ -50,7 +56,7 @@ module.exports = app => {
     };
     let config = {
       headers: {
-        Authorization: `Bearer ${ PAYSTACK_SECRET_KEY}`
+        Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
       }
     };
     try {
@@ -92,7 +98,7 @@ module.exports = app => {
     console.log(req.body);
     let config = {
       headers: {
-        Authorization: `Bearer ${ PAYSTACK_SECRET_KEY}`
+        Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
       }
     };
     let data = {
@@ -119,7 +125,7 @@ module.exports = app => {
     console.log(`boldy for bulk`, req.body);
     let config = {
       headers: {
-        Authorization: `Bearer ${ PAYSTACK_SECRET_KEY}`
+        Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
       }
     };
 
@@ -159,7 +165,7 @@ module.exports = app => {
         method: "get",
         url: URL,
         headers: {
-          Authorization: `Bearer ${ PAYSTACK_SECRET_KEY}`
+          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`
         }
       });
       console.log("headerss", req.headers);
@@ -169,11 +175,10 @@ module.exports = app => {
     }
   });
 
-  
   app.post("/api/paystack/testEndpoint", function(req, res) {
     //validate event
     var hash = crypto
-      .createHmac("sha512", `Bearer ${ PAYSTACK_SECRET_KEY}`)
+      .createHmac("sha512", `Bearer ${PAYSTACK_SECRET_KEY}`)
       .update(JSON.stringify(req.body))
       .digest("hex");
     if (hash == req.headers["x-paystack-signature"]) {
